@@ -3,156 +3,491 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Social Accounts</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Albert's social media profiles and links - Connect with me on various platforms including GitHub, Discord, Twitter, LinkedIn, and more.">
+    <meta name="keywords" content="Albert, social media, profiles, links, GitHub, Discord, social links">
+    <meta name="author" content="Albert">
+    <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f5f5f5" media="(prefers-color-scheme: light)">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Albert's Profiles">
+    <meta property="og:description" content="Connect with Albert across various social media platforms">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://einstein-coins.github.io/">
+    
+    <!-- Performance optimization -->
+    <link rel="dns-prefetch" href="https://www.google.com">
+    <link rel="preconnect" href="https://www.google.com">
+    
+    <title>Albert's Profiles</title>
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="config.js" as="script">
+    <link rel="preload" href="main.js" as="script">
+    
+    <!-- Inline critical CSS -->
     <style>
+        :root {
+            /* Dark mode colors by default */
+            --bg-color: #1a1a1a;
+            --container-bg: #242424;
+            --text-color: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --border-color: #333;
+            --hover-color: #fff;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --input-border: #333;
+            --input-bg: #1a1a1a;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg-color: #f5f5f5;
+                --container-bg: #ffffff;
+                --text-color: #333333;
+                --text-secondary: #666666;
+                --border-color: #eeeeee;
+                --hover-color: #000000;
+                --shadow-color: rgba(0, 0, 0, 0.1);
+                --input-border: #eeeeee;
+                --input-bg: #ffffff;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--bg-color);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #121212;
-            color: #e0e0e0;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
+
         .container {
-            text-align: center;
-            background-color: #1e1e1e;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(255,255,255,0.1);
-            width: 80%;
             max-width: 800px;
-        }
-        .profile-icons {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .profile-icon {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-        }
-        input {
+            margin: 2rem;
             width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #333;
-            border-radius: 5px;
-            background-color: #2a2a2a;
-            color: #e0e0e0;
-            box-sizing: border-box; /* Ensure padding is included in the width */
+            position: relative;
+            z-index: 2;
         }
-        .social-row {
+
+        .search-container {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .search-container::after {
+            content: '🔍';
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 2.5rem 0.75rem 1rem;
+            font-size: 1rem;
+            border: 2px solid var(--input-border);
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.2s ease;
+            background: var(--input-bg);
+            color: var(--text-color);
+        }
+
+        .search-input:focus {
+            border-color: var(--text-color);
+        }
+
+        .links-container {
+            background: var(--container-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px var(--shadow-color);
+        }
+
+        .profile-headers {
+            display: grid;
+            grid-template-columns: 200px auto 200px; /* Fixed widths for left and right */
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+            width: 100%;
+        }
+
+        .profile-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: #2a2a2a;
-            border-radius: 5px;
+            gap: 1rem;
+            width: 200px; /* Fixed width */
         }
-        .social-row .text-container {
+
+        .profile-header.right {
+            justify-content: flex-end;
+            margin-left: auto; /* Push to the far right */
+        }
+
+        .profile-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--container-bg);
+            flex-shrink: 0;
+            overflow: hidden;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            flex: 1;
+            justify-content: center;
         }
-        .main-text, .alt-text {
-            flex: 1;
-            text-align: left;
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-        .alt-text {
+
+        .profile-name {
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+
+        .profile-name.right {
             text-align: right;
+            width: 100%;
         }
-        .text-container .empty {
-            flex: 1; /* Add empty space to keep the layout balanced */
+
+        .link-row {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
         }
-        .social-icon {
-            width: 30px;
-            height: 30px;
-            margin: 0 15px; /* Keep some space around the icon */
+
+        .link-row:last-child {
+            border-bottom: none;
         }
-        a {
-            color: #4da6ff;
+
+        .link-cell {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .link-cell.right {
+            justify-content: flex-end;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .link-cell:not(.right) .link {
+            justify-content: flex-start;  /* Left align text for left side */
+        }
+
+        .link-cell.right .link {
+            justify-content: flex-end;  /* Right align text for right side */
+            text-align: right;  /* Ensure text is right-aligned */
+        }
+
+        .service-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            height: 38px;
+            width: 120px;
+            justify-content: flex-start;
+            margin: 0 auto;
+        }
+
+        .service-info img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .service-name {
+            font-weight: 500;
+            color: var(--text-color);
+            white-space: nowrap;
+        }
+
+        .link {
             text-decoration: none;
+            color: var(--text-color);
+            padding: 0.75rem;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            width: 200px;
         }
-        a:hover {
-            text-decoration: underline;
+
+        .link:hover {
+            color: var(--hover-color);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 1rem;
+            }
+
+            .profile-headers {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .profile-header, .profile-header.right {
+                width: 100%;
+                justify-content: center;
+                margin-left: 0;
+            }
+
+            .profile-name.right {
+                text-align: center;
+                width: auto;
+            }
+
+            .link-cell.right {
+                justify-content: center;
+            }
+
+            .link-cell.right .link {
+                justify-content: center;
+            }
+
+            .service-info {
+                justify-content: center;
+            }
+
+            .link {
+                width: 100%;  /* Full width on mobile */
+                justify-content: center;  /* Center text on mobile */
+            }
+
+            .service-info {
+                width: 100%;  /* Full width on mobile */
+            }
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.5;
+            pointer-events: all;
         }
     </style>
 </head>
 <body>
+    <canvas id="particleCanvas"></canvas>
     <div class="container">
-        <div class="profile-icons">
-            <img src="iamalbert.png" alt="iAmAlbert" class="profile-icon">
-            <img src="einstein.svg" alt="Einstein" class="profile-icon">
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search links..." id="searchInput">
         </div>
-        <input type="text" id="searchBar" placeholder="Search socials...">
-        <div id="socialAccounts"></div>
+        <div class="links-container" id="linksContainer">
+            <!-- Profile headers and links will be dynamically inserted here -->
+        </div>
     </div>
+    <script type="module" src="main.js"></script>
     <script>
-        const socialAccounts = [
-            { name: 'Google', icon: 'google.svg', main: 'ytalberta@gmail.com', mainLink: '', alt: 'einsteincoins@gmail.com', altLink: '' },
-            { name: 'Discord', icon: 'discord.svg', main: 'i_am_albert', mainLink: 'https://discord.gg/N7RNPnBGVU', alt: 'einsteincoins', altLink: 'https://discord.gg/N7RNPnBGVU' },
-            { name: 'Discord Server', icon: 'discord.svg', main: '', mainLink: '', alt: '.gg/iaa', altLink: 'https://discord.gg/N7RNPnBGVU' },
-            { name: 'Telegram', icon: 'telegram.svg', main: 'iAmAlbert_A', mainLink: 'https://t.me/iAmAlbert_A', alt: '⚠️ einstein_coins', altLink: 'https://t.me/einstein_coins' },
-            { name: 'Reddit', icon: 'reddit.svg', main: 'u/iAmAlbert_A', mainLink: 'https://www.reddit.com/user/iAmAlbert_A', alt: '', altLink: '' }
-        ];
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+        let mouseX = width / 2;
+        let mouseY = height / 2;
 
-        const searchBar = document.getElementById('searchBar');
-        const socialAccountsContainer = document.getElementById('socialAccounts');
+        // Array to store gravity points (black holes)
+        const blackHoles = [];
 
-        function createSocialRow(account) {
-            const mainField = account.main
-                ? (account.mainLink && !account.mainLink.includes("@")) ? `<a href="${account.mainLink}" target="_blank" class="main-text">${account.main}</a>` : `<a href="javascript:void(0);" class="main-text" onclick="copyToClipboard('${account.main}')">${account.main}</a>`
-                : '<span class="empty"></span>'; // Add an empty span if no main text
+        class BlackHole {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = 15;
+                this.gravity = 300; // Weaker than cursor
+            }
 
-            const altField = account.alt
-                ? (account.altLink && !account.altLink.includes("@")) ? `<a href="${account.altLink}" target="_blank" class="alt-text">${account.alt}</a>` : `<a href="javascript:void(0);" class="alt-text" onclick="copyToClipboard('${account.alt}')">${account.alt}</a>`
-                : '<span class="empty"></span>'; // Add an empty span if no alt text
-
-            return `
-                <div class="social-row">
-                    <div class="text-container">
-                        ${mainField}
-                        <img src="${account.icon}" alt="${account.name}" class="social-icon">
-                        ${altField}
-                    </div>
-                </div>
-            `;
+            draw() {
+                // Create a radial gradient for the black hole effect
+                const gradient = ctx.createRadialGradient(
+                    this.x, this.y, 0,
+                    this.x, this.y, this.radius * 2
+                );
+                gradient.addColorStop(0, 'rgba(0, 0, 0, 1)');
+                gradient.addColorStop(0.5, 'rgba(0, 0, 0, 0.5)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                
+                ctx.fillStyle = gradient;
+                ctx.globalAlpha = 1;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius * 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
 
-        function displayAccounts(accounts) {
-            socialAccountsContainer.innerHTML = accounts.map(createSocialRow).join('');
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                // Start particles from edges
+                const side = Math.floor(Math.random() * 4);
+                switch(side) {
+                    case 0: // top
+                        this.x = Math.random() * width;
+                        this.y = -10;
+                        break;
+                    case 1: // right
+                        this.x = width + 10;
+                        this.y = Math.random() * height;
+                        break;
+                    case 2: // bottom
+                        this.x = Math.random() * width;
+                        this.y = height + 10;
+                        break;
+                    case 3: // left
+                        this.x = -10;
+                        this.y = Math.random() * height;
+                        break;
+                }
+                
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.speedY = (Math.random() - 0.5) * 2;
+                // Add slight forward motion based on spawn position
+                if (side === 0) this.speedY = Math.abs(this.speedY);
+                if (side === 1) this.speedX = -Math.abs(this.speedX);
+                if (side === 2) this.speedY = -Math.abs(this.speedY);
+                if (side === 3) this.speedX = Math.abs(this.speedX);
+                
+                this.baseAlpha = 1;
+            }
+
+            update() {
+                // Cursor gravity
+                const dx = mouseX - this.x;
+                const dy = mouseY - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (dist < 50) { // Cursor collision
+                    this.baseAlpha -= 0.1; // Fade out
+                    if (this.baseAlpha <= 0) this.reset();
+                } else {
+                    // Apply cursor gravity
+                    const force = 1000 / (dist * dist);
+                    this.speedX += (dx / dist) * force;
+                    this.speedY += (dy / dist) * force;
+                }
+
+                // Black hole gravity and absorption
+                blackHoles.forEach(hole => {
+                    const pdx = hole.x - this.x;
+                    const pdy = hole.y - this.y;
+                    const pdist = Math.sqrt(pdx * pdx + pdy * pdy);
+
+                    if (pdist < hole.radius) { // Particle gets absorbed
+                        this.baseAlpha -= 0.2; // Faster fade out for black holes
+                        if (this.baseAlpha <= 0) this.reset();
+                    } else {
+                        // Apply black hole gravity
+                        const force = hole.gravity / (pdist * pdist);
+                        this.speedX += (pdx / pdist) * force;
+                        this.speedY += (pdy / pdist) * force;
+                    }
+                });
+                
+                // Add drag
+                this.speedX *= 0.99;
+                this.speedY *= 0.99;
+
+                // Update position
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Wrap around screen
+                if (this.x < -50) this.x = width + 50;
+                if (this.x > width + 50) this.x = -50;
+                if (this.y < -50) this.y = height + 50;
+                if (this.y > height + 50) this.y = -50;
+            }
+
+            draw() {
+                // Get the background color to determine particle brightness
+                const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--bg-color').trim();
+                const isDark = bgColor.includes('#1a1a1a');
+                
+                // Set particle color based on theme
+                ctx.fillStyle = isDark ? '#ffffff' : '#000000';
+                ctx.globalAlpha = this.baseAlpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
 
-        function filterAccounts(searchTerm) {
-            return socialAccounts.filter(account =>
-                account.name.toLowerCase().includes(searchTerm) ||
-                account.main.toLowerCase().includes(searchTerm) ||
-                account.alt.toLowerCase().includes(searchTerm)
-            );
+        // Create particle array - more particles
+        const particles = Array(400).fill().map(() => new Particle());
+
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw and update black holes
+            blackHoles.forEach(hole => hole.draw());
+            
+            // Draw and update particles
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            requestAnimationFrame(animate);
         }
 
-        searchBar.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            const filteredAccounts = filterAccounts(searchTerm);
-            displayAccounts(filteredAccounts);
+        // Handle mouse movement
+        document.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
         });
 
-        // Function to copy text to clipboard
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert(`Copied to clipboard: ${text}`);
-            }).catch(err => {
-                alert('Failed to copy text: ', err);
-            });
-        }
+        // Handle clicks to create black holes
+        document.addEventListener('click', (e) => {
+            // Ignore clicks on the container
+            if (e.target.closest('.container')) return;
+            
+            const x = e.clientX;
+            const y = e.clientY;
+            blackHoles.push(new BlackHole(x, y));
+        });
 
-        // Initial display
-        displayAccounts(socialAccounts);
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        // Start animation
+        animate();
     </script>
 </body>
-</html>
+</html> 
