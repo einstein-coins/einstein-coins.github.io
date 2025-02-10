@@ -90,6 +90,11 @@ const config = {
                     title: "Matrix",
                     username: "iamalbert:matrix.org"
                 },
+                {
+                    url: "https://link.brawlstars.com/invite/friend/en?tag=C2VV8L0U&token=iAmAlbertA",
+                    title: "Brawl Stars",
+                    username: "iAmAlbertA"
+                },
             ]
         }
     }
