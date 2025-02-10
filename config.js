@@ -95,6 +95,11 @@ const config = {
                     title: "Brawl Stars",
                     username: "iAmAlbertA"
                 },
+                {
+                    url: "https://signal.me/#eu/FaZnO4P3QX6mxq_qeZn_p8b5JbuAvbBYPDT2_X_WqdEIbR1lSzxNAKHIWrhPVJdH",
+                    title: "Signal",
+                    username: "iamalbert.01"
+                },
             ]
         }
     }
