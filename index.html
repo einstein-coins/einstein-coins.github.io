@@ -345,41 +345,44 @@
 
         class Particle {
             constructor() {
-                this.reset();
+                // Random initial position across the entire screen
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.speedY = (Math.random() - 0.5) * 2;
+                this.baseAlpha = 1;
             }
 
             reset() {
-                // Start particles from edges
+                // When absorbed, respawn at a random edge
                 const side = Math.floor(Math.random() * 4);
                 switch(side) {
                     case 0: // top
                         this.x = Math.random() * width;
                         this.y = -10;
+                        this.speedY = Math.abs(this.speedY); // Force downward
                         break;
                     case 1: // right
                         this.x = width + 10;
                         this.y = Math.random() * height;
+                        this.speedX = -Math.abs(this.speedX); // Force leftward
                         break;
                     case 2: // bottom
                         this.x = Math.random() * width;
                         this.y = height + 10;
+                        this.speedY = -Math.abs(this.speedY); // Force upward
                         break;
                     case 3: // left
                         this.x = -10;
                         this.y = Math.random() * height;
+                        this.speedX = Math.abs(this.speedX); // Force rightward
                         break;
                 }
-                
-                this.size = Math.random() * 2 + 1;
-                this.speedX = (Math.random() - 0.5) * 2;
-                this.speedY = (Math.random() - 0.5) * 2;
-                // Add slight forward motion based on spawn position
-                if (side === 0) this.speedY = Math.abs(this.speedY);
-                if (side === 1) this.speedX = -Math.abs(this.speedX);
-                if (side === 2) this.speedY = -Math.abs(this.speedY);
-                if (side === 3) this.speedX = Math.abs(this.speedX);
-                
                 this.baseAlpha = 1;
+                // Reset speed if it's too high
+                if (Math.abs(this.speedX) > 2) this.speedX *= 0.5;
+                if (Math.abs(this.speedY) > 2) this.speedY *= 0.5;
             }
 
             update() {
@@ -423,11 +426,13 @@
                 this.x += this.speedX;
                 this.y += this.speedY;
 
-                // Wrap around screen
-                if (this.x < -50) this.x = width + 50;
-                if (this.x > width + 50) this.x = -50;
-                if (this.y < -50) this.y = height + 50;
-                if (this.y > height + 50) this.y = -50;
+                // Only wrap if not being absorbed (baseAlpha is 1)
+                if (this.baseAlpha >= 1) {
+                    if (this.x < -50) this.x = width + 49;
+                    if (this.x > width + 50) this.x = -49;
+                    if (this.y < -50) this.y = height + 49;
+                    if (this.y > height + 50) this.y = -49;
+                }
             }
 
             draw() {
@@ -435,7 +440,34 @@
                 const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--bg-color').trim();
                 const isDark = bgColor.includes('#1a1a1a');
                 
-                // Set particle color based on theme
+                // Draw trail first
+                const speed = Math.sqrt(this.speedX * this.speedX + this.speedY * this.speedY);
+                if (speed > 2) { // Only draw trails for moving particles
+                    const trailLength = Math.min(speed * 3, 20); // Adjust trail length based on speed
+                    
+                    const gradient = ctx.createLinearGradient(
+                        this.x - this.speedX * 2,
+                        this.y - this.speedY * 2,
+                        this.x,
+                        this.y
+                    );
+                    
+                    gradient.addColorStop(0, `${isDark ? 'rgba(255,255,255,0)' : 'rgba(0,0,0,0)'}`);
+                    gradient.addColorStop(1, `${isDark ? `rgba(255,255,255,${this.baseAlpha})` : `rgba(0,0,0,${this.baseAlpha})`}`);
+                    
+                    ctx.strokeStyle = gradient;
+                    ctx.lineWidth = this.size;
+                    ctx.lineCap = 'round';
+                    ctx.beginPath();
+                    ctx.moveTo(
+                        this.x - (this.speedX * trailLength / speed),
+                        this.y - (this.speedY * trailLength / speed)
+                    );
+                    ctx.lineTo(this.x, this.y);
+                    ctx.stroke();
+                }
+                
+                // Draw particle
                 ctx.fillStyle = isDark ? '#ffffff' : '#000000';
                 ctx.globalAlpha = this.baseAlpha;
                 ctx.beginPath();
@@ -466,8 +498,11 @@
         // Handle mouse movement
         document.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
-            mouseX = e.clientX - rect.left;
-            mouseY = e.clientY - rect.top;
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            mouseX = (e.clientX - rect.left) * scaleX;
+            mouseY = (e.clientY - rect.top) * scaleY;
         });
 
         // Handle clicks to create black holes
@@ -475,8 +510,12 @@
             // Ignore clicks on the container
             if (e.target.closest('.container')) return;
             
-            const x = e.clientX;
-            const y = e.clientY;
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            const x = (e.clientX - rect.left) * scaleX;
+            const y = (e.clientY - rect.top) * scaleY;
             blackHoles.push(new BlackHole(x, y));
         });
 
