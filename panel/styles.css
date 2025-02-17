@@ -1,0 +1,339 @@
+:root {
+    --primary-color: #1a0b2e;
+    --secondary-color: #32245C;
+    --accent-color: #6b4fbb;
+    --text-color: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.7);
+    --background-color: #1B1136;
+    --surface-color: rgba(0, 0, 0, 0.25);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --row-hover: rgba(255, 255, 255, 0.05);
+    --sidebar-width: 300px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.panel-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: var(--sidebar-width);
+    background: var(--surface-color);
+    border-right: 1px solid var(--border-color);
+    padding: 2rem;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar-section {
+    margin-bottom: 2rem;
+}
+
+.sidebar-section h3 {
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.nav-list {
+    list-style: none;
+}
+
+.nav-link {
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 0.5rem 0;
+    display: block;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+    color: var(--accent-color);
+}
+
+.info-content {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.info-content p {
+    margin-bottom: 1rem;
+}
+
+.info-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Main Content Area */
+.main-content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    padding: 2rem;
+}
+
+/* Search */
+.search-container {
+    margin-bottom: 1.5rem;
+    background: var(--surface-color);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.search-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+/* Services Table */
+.services-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--surface-color);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.services-table th {
+    background: var(--secondary-color);
+    font-weight: 600;
+    color: var(--text-color);
+    padding: 1rem;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.services-table td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Category Row */
+.category-row {
+    background: rgba(50, 36, 92, 0.3);
+}
+
+.category-row td {
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    font-size: 1rem;
+}
+
+/* Service Row */
+.service-row.clickable {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.service-row.clickable:hover {
+    background: var(--row-hover);
+}
+
+.service-id {
+    color: var(--text-muted);
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+/* Rate Column */
+.rate {
+    color: var(--accent-color);
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.info-button {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+    background: rgba(74, 144, 226, 0.2);
+    color: #4a90e2;
+    border: 1px solid #4a90e2;
+}
+
+.info-button:hover {
+    background: rgba(74, 144, 226, 0.3);
+}
+
+/* Hide service row when filtered */
+.service-row.hidden {
+    display: none;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: var(--surface-color);
+    border-radius: 8px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+    border: 1px solid var(--border-color);
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-content h2 {
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+}
+
+.modal-content h3 {
+    color: var(--accent-color);
+    margin: 1.5rem 0 1rem;
+}
+
+.service-details p {
+    margin-bottom: 0.75rem;
+}
+
+.order-info {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.contact-channels {
+    margin-bottom: 1.5rem;
+}
+
+.contact-channels ul {
+    list-style: none;
+    margin-top: 0.5rem;
+}
+
+.contact-channels li {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.contact-channels li strong {
+    color: var(--accent-color);
+}
+
+.message-template {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.template-box {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 0.5rem 0;
+    white-space: pre-line;
+    font-family: monospace;
+    color: var(--text-muted);
+}
+
+.template-note {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    :root {
+        --sidebar-width: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .panel-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        position: static;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .services-table {
+        display: block;
+        overflow-x: auto;
+    }
+} 

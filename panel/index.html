@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services Panel</title>
+    <link rel="stylesheet" href="styles.css?v=3">
+    <script src="config.js?v=3" defer></script>
+    <script src="panel.js?v=3" defer></script>
+</head>
+<body>
+    <div class="panel-container">
+        <!-- Sidebar will be inserted here by JavaScript -->
+        <div class="main-content">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search services..." class="search-input">
+            </div>
+
+            <table class="services-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>SERVICE</th>
+                        <th>RATE (USD)</th>
+                        <th>MIN ORDER</th>
+                        <th>MAX ORDER</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Categories and services will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Service Info Modal -->
+    <div class="modal" id="info-modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-body">
+                <!-- Service info will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
