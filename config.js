@@ -43,6 +43,12 @@ const config = {
             link: "https://einstein-coins.github.io"
         },
         {
+            title: "School projects",
+            description: "Projects I've done for my highschool computer science class",
+            technologies: ["p5.js"],
+            link: "https://i-am-albert.github.io/school/"
+        },
+        {
             title: "AI Sans Attack Creator",
             description: "Create custom Sans attacks for Bad Time Simulator using AI",
             technologies: ["HTML", "CSS", "JavaScript", "AI"],
@@ -72,6 +78,11 @@ const config = {
             url: "https://discord.com/users/211594819158409217",
             icon: "https://www.google.com/s2/favicons?domain=discord.com",
             primary: true
+        },
+        {
+            name: "Minecraft: Java | iAmAlbert",
+            url: "https://namemc.com/profile/iAmAlbert.4",
+            icon: "https://minecraft.wiki/images/Grass_Block_JE7_BE6.png"
         },
         {
             name: "X (Twitter) | @iAmAlbert_a",
