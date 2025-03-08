@@ -11,14 +11,13 @@ const config = {
                     <h3>I am:</h3>
                     <ul class="about-list">
                         <li>a grade 11 highschool student</li>
-                        <li>a developer</li>
+                        <li>a developer (not really)</li>
                         <li>from Canada</li>
                         <li id="timezone">in time zone UTC-6 (<span id="current-time"></span>)</li>
                         <li>16 years old</li>
                         <li>male</li>
                         <li>190cm tall</li>
                         <li>a Minecraft player</li>
-                        <li>looking to make $$$</li>
                     </ul>
                 </div>
                 <div class="about-image">
