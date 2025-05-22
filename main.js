@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const SQRT_2 = Math.sqrt(2);
     const BASE_FORCE = 0.35 / SQRT_2;
     const FRICTION = 0.995;
+    let isMouseDown = false;
 
     // Create stars using DocumentFragment
     const fragment = document.createDocumentFragment();
@@ -44,6 +45,65 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     starContainer.appendChild(fragment);
 
+    function createStar(x, y) {
+        const starIdx = starElements.length * 4;
+        // Expand Float32Array or use a dynamic array if MAX_STARS is very large and stars are frequently added/removed.
+        // For simplicity, we'll assume MAX_STARS is manageable and pre-allocate or manage a dynamic list.
+        // This example will simply push to JS arrays and create a new star element.
+        // A more robust solution might involve a pool of star objects or more complex array management if stars are frequently destroyed.
+
+        const newStarsData = new Float32Array(stars.length + 4);
+        newStarsData.set(stars);
+        newStarsData[starIdx] = x;
+        newStarsData[starIdx + 1] = y;
+        newStarsData[starIdx + 2] = (Math.random() - 0.5) * 0.2; // vx
+        newStarsData[starIdx + 3] = (Math.random() - 0.5) * 0.2; // vy
+        stars = newStarsData;
+
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+        starContainer.appendChild(star);
+        starElements.push(star);
+    }
+
+    starContainer.addEventListener('mousedown', (e) => {
+        console.log('Star container mousedown. Button:', e.button, 'Target:', e.target);
+        if (e.button === 0) { // Left click
+            isMouseDown = true;
+            createStar(e.clientX, e.clientY);
+        }
+    });
+
+    starContainer.addEventListener('mouseup', (e) => {
+        console.log('Star container mouseup. Button:', e.button, 'Target:', e.target);
+        if (e.button === 0) { // Left click
+            isMouseDown = false;
+        }
+    });
+
+    starContainer.addEventListener('auxclick', (e) => { // Middle click
+        console.log('Star container auxclick. Button:', e.button, 'Target:', e.target);
+        if (e.button === 1) {
+            createStar(e.clientX, e.clientY);
+        }
+    });
+
+    starContainer.addEventListener('contextmenu', (e) => { // Right click
+        console.log('Star container contextmenu. Button:', e.button, 'Target:', e.target);
+        e.preventDefault(); // Prevent context menu
+        createStar(e.clientX, e.clientY);
+    });
+
+    starContainer.addEventListener('mouseleave', (e) => {
+        console.log('Star container mouseleave. Target:', e.target);
+        // Only reset isMouseDown if the mouse truly leaves the starContainer,
+        // not when moving over a newly created star element that's a child.
+        if (e.target === starContainer) {
+            isMouseDown = false;
+        }
+    });
+
     // Optimization: Use a single RAF loop without batching
     function update(currentTime) {
         frameId = requestAnimationFrame(update);
@@ -54,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Skip frame if too much time has passed (tab was inactive)
         if (deltaTime > 100) return;
         
-        for (let i = 0; i < numberOfStars; i++) {
+        for (let i = 0; i < starElements.length; i++) { // Iterate up to current number of stars
             const idx = i * 4;
             const dx = mouseX - stars[idx];
             const dy = mouseY - stars[idx + 1];
@@ -98,6 +158,9 @@ document.addEventListener('DOMContentLoaded', () => {
             mouseX = e.clientX;
             mouseY = e.clientY;
             lastMouseUpdate = now;
+            if (isMouseDown) { // Spawn star on drag
+                createStar(e.clientX, e.clientY);
+            }
         }
     }, { passive: true });
 
